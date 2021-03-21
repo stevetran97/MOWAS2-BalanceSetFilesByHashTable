@@ -1,0 +1,12 @@
+#Loop through files
+  #Loop through lines
+    #If line is a comment line, check state
+      #If no state is found return state of none
+      #If state is found return hashtable of updatable items
+
+    #If state is not None:
+      #Find vehicleName
+      #If vehicleName in state Hash, 
+        #replace Cost with value of that state Hash
+      #Else:
+        #return error message
