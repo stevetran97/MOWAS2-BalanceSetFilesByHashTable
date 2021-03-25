@@ -10,6 +10,7 @@ import os
 replacementPattern = r'cost [0-9]+'
 
 # This SINGLE string entry is when enables a state Change check
+# Vehicle Class Search Pattern in the set file must start and end with comment
 commentTrigger = ';'
 
 # List of vehicle properties to update in the set files
@@ -84,10 +85,11 @@ vehiclePropsTable = {
         "btr50pb": 125,
         "btr50pb(ddr)": 125,
         "btr50pb(nva)": 125,
+        # Russian version
         "btr60": 130,
         "btr80": 200,
         "btr80a": 220,
-        "btr_70": 200,
+        "btr_70": 190,
         "hummvee_mk19": 150,
         "maxxpro": 150,
         "ridgback_d": 100,
@@ -760,8 +762,10 @@ def classPropsSelection(line, vehiclePropsTable):
     # Loop through vehicleClass keys (first layer) in vehiclePropsTable
     for vehicleClass in vehiclePropsTable:
         # If vehicle Class is found in the current comment line
+        # Vehicle Class Search Pattern must start and end with comment
+        vehicleClassPattern = commentTrigger + vehicleClass + commentTrigger
         # return corresponding 2nd layer hash table of vehicle properties for that class
-        if re.search(vehicleClass, line):
+        if re.search(vehicleClassPattern, line):
             return vehiclePropsTable[vehicleClass]
     # If can't find a the class of vehicles, return DISABLING NONE default state
     return None
@@ -776,7 +780,6 @@ def searchAndReplace(patternToSearch, updateOptions):
     if vehicleNameMatch:
         vehicleNameMatch = re.findall(
             r'[a-zA-z0-9~@#$^*()_+=[\]|\\,.?:-]+', vehicleNameMatch[0])
-
         # If vehicleName string found in current vehicle class updateOptions hash table
         if vehicleNameMatch[0] in updateOptions:
             # Get exact pattern to replace
